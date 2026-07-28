@@ -5,6 +5,11 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Keep Supabase alive — pings every 4 days
+setInterval(async () => {
+  await supabase.from("tasks").select("id").limit(1);
+}, 1000 * 60 * 60 * 24 * 4);
+
 const COLORS = {
   bg: "#0f0f0f", surface: "#161616", card: "#1c1c1c", border: "#2a2a2a",
   accent: "#c8a96e", accentDim: "#8a7048", green: "#4caf7d", red: "#e05c5c",
