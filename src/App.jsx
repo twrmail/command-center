@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = "https://orejawehxpzzczttokvl.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yZWphd2VoeHB6emN6dHRva3ZsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTIyMjcwNiwiZXhwIjoyMTAwNzk4NzA2fQ.pxgm3kbjTifjhgGGvr3Tyg6eI1PC0_q-mWkBPoqB8bA";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const COLORS = {
@@ -30,8 +30,8 @@ const icons = {
   check: "M20 6L9 17l-5-5",
 };
 
-const Card = ({ children, style = {} }) => (
-  <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 20, ...style }}>
+const Card = ({ children, style = {}, onClick }) => (
+  <div onClick={onClick} style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 20, ...style }}>
     {children}
   </div>
 );
