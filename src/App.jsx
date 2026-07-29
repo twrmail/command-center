@@ -616,7 +616,7 @@ export default function App() {
     sessionStorage.getItem('cc_unlocked') === 'true'
   );
   const unlock = () => { sessionStorage.setItem('cc_unlocked','true'); setUnlocked(true); };
-  if (!unlocked) return <PinScreen onUnlock={unlock} />;
+  
   const [tab, setTab] = useState("overview");
   const tabs = [
     { id: "overview", label: "Overview", icon: icons.home },
@@ -625,7 +625,7 @@ export default function App() {
     { id: "ideas", label: "Ideas", icon: icons.idea },
     { id: "daughters", label: "Daughters", icon: icons.daughters },
   ];
-
+if (!unlocked) return <PinScreen onUnlock={unlock} />;
   return (
     <div style={{ minHeight: "100vh", background: COLORS.bg, color: COLORS.text, fontFamily: "'DM Sans', 'Trebuchet MS', sans-serif" }}>
       <div style={{ borderBottom: `1px solid ${COLORS.border}`, padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, background: COLORS.bg, zIndex: 10 }}>
