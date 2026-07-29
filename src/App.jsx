@@ -4,7 +4,39 @@ import { createClient } from "@supabase/supabase-js";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+// PIN Protection
+const CORRECT_PIN = '8667';
+function PinScreen({ onUnlock }) {
+  const [entry, setEntry] = useState('');
+  const [error, setError] = useState(false);
+  const press = (v) => {
+    if (v === 'C') { setEntry(''); return; }
+    if (v === 'D') { setEntry(p => p.slice(0,-1)); return; }
+    if (entry.length >= 4) return;
+    const next = entry + v;
+    setEntry(next);
+    if (next.length === 4) {
+      setTimeout(() => {
+        if (next === CORRECT_PIN) { onUnlock(); }
+        else { setError(true); setEntry(''); setTimeout(() => setError(false), 1500); }
+      }, 150);
+    }
+  };
+  return (
+    <div style={{ minHeight:'100vh', background:'#0f0f0f', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:24 }}>
+      <div style={{ fontSize:14, letterSpacing:3, textTransform:'uppercase', color:COLORS.accent }}>CommCon</div>
+      <div style={{ display:'flex', gap:16 }}>
+        {[0,1,2,3].map(i => <div key={i} style={{ width:14, height:14, borderRadius:'50%', border:`2px solid ${COLORS.accent}`, background: i < entry.length ? COLORS.accent : 'transparent' }}/>)}
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 64px)', gap:10 }}>
+        {[1,2,3,4,5,6,7,8,9,'C',0,'D'].map(v => (
+          <button key={v} onClick={() => press(v)} style={{ width:64, height:64, borderRadius:'50%', border:`1.5px solid ${COLORS.border}`, background:COLORS.card, color:COLORS.text, fontSize:20, cursor:'pointer', fontFamily:'inherit' }}>{v}</button>
+        ))}
+      </div>
+      {error && <div style={{ color:COLORS.red, fontSize:13 }}>Incorrect PIN</div>}
+    </div>
+  );
+}
 // Keep Supabase alive — pings every 4 days
 setInterval(async () => {
   await supabase.from("tasks").select("id").limit(1);
@@ -580,6 +612,11 @@ function OverviewTab({ setTab }) {
 }
 
 export default function App() {
+  const [unlocked, setUnlocked] = useState(
+    sessionStorage.getItem('cc_unlocked') === 'true'
+  );
+  const unlock = () => { sessionStorage.setItem('cc_unlocked','true'); setUnlocked(true); };
+  if (!unlocked) return <PinScreen onUnlock={unlock} />;
   const [tab, setTab] = useState("overview");
   const tabs = [
     { id: "overview", label: "Overview", icon: icons.home },
