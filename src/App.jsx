@@ -598,9 +598,9 @@ export default function App() {
         </div>
         <div style={{ width: 8, height: 8, borderRadius: "50%", background: COLORS.green, boxShadow: `0 0 8px ${COLORS.green}` }} />
       </div>
-      <div style={{ display: "flex", gap: 2, padding: "12px 16px", borderBottom: `1px solid ${COLORS.border}`, overflowX: "auto" }}>
+      <div style={{ display: "flex", gap: 2, padding: "12px 8px", borderBottom: `1px solid ${COLORS.border}`, overflowX: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}>
         {tabs.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, border: "none", background: tab === t.id ? COLORS.accent + "22" : "transparent", color: tab === t.id ? COLORS.accent : COLORS.muted, cursor: "pointer", fontFamily: "inherit", fontSize: 13, fontWeight: tab === t.id ? 700 : 400, whiteSpace: "nowrap", transition: "all 0.15s" }}>
+          <button key={t.id} onClick={() => setTab(t.id)} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 10px", borderRadius: 8, border: "none", background: tab === t.id ? COLORS.accent + "22" : "transparent", color: tab === t.id ? COLORS.accent : COLORS.muted, cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: tab === t.id ? 700 : 400, whiteSpace: "nowrap", transition: "all 0.15s" }}>
             <Icon d={t.icon} size={14} color={tab === t.id ? COLORS.accent : COLORS.muted} />
             {t.label}
           </button>
